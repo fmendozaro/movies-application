@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently 'webpack-dev-server' 'json-server -d1200 --watch db.json' 'node-sass --watch --source-map true --output public/ src/style.scss'",
-    "build": "webpack -p",
+    "dev": "scripts/dev",
+    "build": "scripts/build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

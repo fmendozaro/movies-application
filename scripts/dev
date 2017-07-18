@@ -1,0 +1,6 @@
+#!/bin/bash
+
+concurrently\
+    'webpack-dev-server'\
+    'json-server -d1200 --watch db.json'\
+    'node-sass --watch --source-map true --output public/ src/style.scss'

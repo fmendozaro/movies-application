@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+webpack -p
+
+node-sass\
+    --output-style compressed\
+    --output public\
+    src/style.scss
