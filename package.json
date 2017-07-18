@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently 'webpack-dev-server' 'json-server -d1200 --watch db.json'",
+    "dev": "concurrently 'webpack-dev-server' 'json-server -d1200 --watch db.json' 'node-sass --watch --source-map true --output public/ src/style.scss'",
     "build": "webpack -p",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +18,7 @@
     "concurrently": "^3.5.0",
     "jquery": "^3.2.1",
     "json-server": "^0.11.2",
+    "node-sass": "^4.5.3",
     "promise-polyfill": "^6.0.2",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.5.0",
