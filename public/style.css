@@ -30,3 +30,7 @@ html, body {
     text-align: center;
     margin-top: 30%;
 }
+
+#add-movie-form{
+    display: none;
+}
