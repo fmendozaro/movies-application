@@ -9,16 +9,17 @@ sayHello('World');
  */
 const getMovies = require('./getMovies.js');
 
-let overlay = document.getElementById("overlay")
+let overlay = document.getElementById("overlay");
+let showBtn = document.getElementById("show-add-form");
+let addForm = document.getElementById("add-movie-form");
+let addMovie = document.getElementById("add-movie");
 overlay.style.setProperty("display", "block");
 
 getMovies().then((movies) => {
 
-    console.log('Here are all the movies:');
     let moviesDiv = document.getElementById("movies");
     let moviesHMTL = "";
     movies.forEach(({title, rating, id}) => {
-    console.log(`id#${id} - ${title} - rating: ${rating}`);
     moviesHMTL += `<div>
                     <span class="movie-title">Title: ${title}</span>
                     <span class="rating">Rating: ${rating}</span>
@@ -31,4 +32,17 @@ getMovies().then((movies) => {
 }).catch((error) => {
     let errorDiv = document.getElementById("error");
     errorDiv.innerText = 'Oh no! Something went wrong.\nCheck the console for details.';
+});
+
+showBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    console.log("click");
+    addForm.classList.remove("hidden");
+});
+
+addMovie.addEventListener("click", (e) => {
+    e.preventDefault();
+    let title = document.getElementById("title");
+    let rating = document.getElementsByName("rating");
+    
 });
