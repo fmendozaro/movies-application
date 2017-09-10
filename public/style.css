@@ -31,6 +31,6 @@ html, body {
     margin-top: 30%;
 }
 
-#add-movie-form{
+.hidden{
     display: none;
 }
