@@ -17,13 +17,13 @@ overlay.style.setProperty("display", "block");
 
 getMovies().then((movies) => {
 
-    let moviesDiv = document.getElementById("movies");
+    let moviesDiv = document.getElementById("moviesList");
     let moviesHMTL = "";
     movies.forEach(({title, rating, id}) => {
-    moviesHMTL += `<div>
-                    <span class="movie-title">Title: ${title}</span>
-                    <span class="rating">Rating: ${rating}</span>
-                   </div>`;
+    moviesHMTL += `<tr>
+                        <td>Title: ${title}</span>
+                        <td class="rating">${rating}</td>
+                   </tr>`;
     });
 
     moviesDiv.innerHTML = moviesHMTL ;
@@ -32,6 +32,7 @@ getMovies().then((movies) => {
 }).catch((error) => {
     let errorDiv = document.getElementById("error");
     errorDiv.innerText = 'Oh no! Something went wrong.\nCheck the console for details.';
+    overlay.style.setProperty("display", "none");
 });
 
 showBtn.addEventListener("click", (e) => {
