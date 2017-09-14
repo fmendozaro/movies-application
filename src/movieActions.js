@@ -1,5 +1,5 @@
 const addMovie = (title, rating) => {
-    fetch("/api/movies", {
+    return fetch("/api/movies", {
         headers: {
             "content-type": "application/json"
         },
