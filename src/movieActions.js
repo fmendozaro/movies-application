@@ -1,5 +1,13 @@
-const addMovie = () => {
-  return false;
+const addMovie = (title, rating) => {
+    fetch("/api/movies", {
+        headers: {
+            "content-type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify({title, rating})
+    }).then( (response) => {
+        response.json();
+    });
 };
 
-module.exports = addMovie();
+module.exports = {addMovie};
