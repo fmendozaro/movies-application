@@ -11,9 +11,9 @@ const getMovies = require('./getMovies.js');
 const movieActions = require("./movieActions");
 const loading = require("./loading");
 
-const addMovie = document.getElementById("add-movie-btn");
-const moviesBody = document.getElementById("moviesList");
-const errorDiv = document.getElementById("error");
+const addMovie = $("#add-movie-btn");
+const moviesBody = $("#moviesList");
+const errorDiv = $("#error");
 
 buildTable();
 
@@ -22,31 +22,48 @@ function buildTable(){
 
     getMovies().then((movies) => {
 
-        moviesBody.innerHTML = "";
+        moviesBody.empty();
         let moviesHMTL = "";
-        movies.forEach(({title, rating, id}) => {
+        movies.reverse().forEach( ({title, rating, id}) => {
             moviesHMTL += `
                     <tr>
                         <td>${title}</td>
                         <td class="rating">${rating}</td>
+                        <td class="rating">
+                            <button class="edit-btn btn btn-warning" data-dbid =${id}>Edit</button>
+                            <button class="delete-btn btn btn-danger" data-dbid =${id}>Delete</button>
+                        </td>
                     </tr>`;
         });
 
-        moviesBody.innerHTML = moviesHMTL ;
+        moviesBody.html(moviesHMTL);
         loading.hide();
 
     }).catch((error) => {
-        errorDiv.innerText = 'Oh no! Something went wrong.\nCheck the console for details.';
+        errorDiv.text = `Oh no! Something went wrong.\nCheck the console for details. ERROR: ${error}`;
         loading.hide();
     });
 }
 
-addMovie.addEventListener("click", (e) => {
+const editBtns = $(".edit-btn");
+const deleteBtns = $(".delete-btn");
+
+editBtns.click( () => {
+    console.log($(this).data("id"));
+});
+
+addMovie.click( (e) => {
     e.preventDefault();
-    let title = document.getElementById("title").value;
-    let ratings = document.getElementsByName("rating");
-    let rating = Array.from(ratings).filter( (radio) => radio.checked === true );
-    movieActions.addMovie(title, rating[0].value, moviesBody);
-    buildTable();
     $('#form-modal').modal('hide');
+    loading.show();
+    let title = $("#title").val();
+    let ratings = $("input[name=rating]");
+    let rating = Array.from(ratings).filter( (radio) => radio.checked === true );
+    let addsMovie = movieActions.addMovie(title, rating[0].value, moviesBody);
+    addsMovie.then( () => {
+        loading.hide();
+        buildTable();
+    }).catch( () => {
+
+    });
 });
