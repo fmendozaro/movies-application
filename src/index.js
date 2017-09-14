@@ -9,20 +9,20 @@ sayHello('World');
  */
 const getMovies = require('./getMovies.js');
 const movieActions = require("./movieActions");
+const loading = require("./loading");
 
-const overlay = document.getElementById("overlay");
 const addMovie = document.getElementById("add-movie-btn");
 const moviesBody = document.getElementById("moviesList");
 const errorDiv = document.getElementById("error");
 
-overlay.style.setProperty("display", "block");
+buildTable();
 
 function buildTable(){
+    loading.show();
 
     getMovies().then((movies) => {
 
-        overlay.style.setProperty("display", "block");
-
+        moviesBody.innerHTML = "";
         let moviesHMTL = "";
         movies.forEach(({title, rating, id}) => {
             moviesHMTL += `
@@ -33,15 +33,13 @@ function buildTable(){
         });
 
         moviesBody.innerHTML = moviesHMTL ;
-        overlay.style.setProperty("display", "none");
+        loading.hide();
 
     }).catch((error) => {
         errorDiv.innerText = 'Oh no! Something went wrong.\nCheck the console for details.';
-        overlay.style.setProperty("display", "none");
+        loading.hide();
     });
 }
-
-buildTable();
 
 addMovie.addEventListener("click", (e) => {
     e.preventDefault();
