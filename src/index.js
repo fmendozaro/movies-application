@@ -29,7 +29,7 @@ function buildTable(){
                     <tr>
                         <td>${title}</td>
                         <td class="rating">${rating}</td>
-                        <td class="rating">
+                        <td class="actions">
                             <button class="edit-btn btn btn-warning" data-dbid =${id}>Edit</button>
                             <button class="delete-btn btn btn-danger" data-dbid =${id}>Delete</button>
                         </td>
@@ -37,6 +37,9 @@ function buildTable(){
         });
 
         moviesBody.html(moviesHMTL);
+
+        addTableEvents();
+
         loading.hide();
 
     }).catch((error) => {
@@ -45,12 +48,13 @@ function buildTable(){
     });
 }
 
-const editBtns = $(".edit-btn");
-const deleteBtns = $(".delete-btn");
+function addTableEvents() {
+    $("table").delegate(".edit-btn", "click", function(){
+        let id = $(this).data("dbid");
+        let movie = getMovies(id);
 
-editBtns.click( () => {
-    console.log($(this).data("id"));
-});
+    });
+}
 
 addMovie.click( (e) => {
     e.preventDefault();
@@ -59,11 +63,12 @@ addMovie.click( (e) => {
     let title = $("#title").val();
     let ratings = $("input[name=rating]");
     let rating = Array.from(ratings).filter( (radio) => radio.checked === true );
-    let addsMovie = movieActions.addMovie(title, rating[0].value, moviesBody);
+    let addsMovie = movieActions.addMovie(title, rating[0].value);
+    // let addsMovie = movieActions.editMovie(1, title, rating[0].value);
     addsMovie.then( () => {
         loading.hide();
         buildTable();
-    }).catch( () => {
-
+    }).catch( (error) => {
+        console.error(error);
     });
 });
