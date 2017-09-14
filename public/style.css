@@ -2,14 +2,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: beige;
-}
-
-.container {
-    position: relative;
-    top: 50%;
-    transform: translateY(-100%);
-    text-align: center;
+    background-color: #c4d6f5;
 }
 
 #overlay{
@@ -29,8 +22,4 @@ html, body {
     font-size: 50px;
     text-align: center;
     margin-top: 30%;
-}
-
-.hidden{
-    display: none;
 }
