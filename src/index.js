@@ -17,6 +17,24 @@ const errorDiv = $("#error");
 
 buildTable();
 
+function addTableEvents() {
+
+    $("table").off().delegate(".edit-btn", "click", function(){
+        let id = $(this).data("dbid");
+        let movie = getMovies(id).then( () => response.json() );
+        console.log(movie.then( (data) => console.log(data) ));
+    });
+
+    $("table").off().delegate(".delete-btn", "click", function(){
+        let id = $(this).data("dbid");
+        movieActions.remove(id)
+            .then( () => response.json() )
+            .catch( (error) => console.log(error) );
+        buildTable();
+    });
+
+}
+
 function buildTable(){
     loading.show();
 
@@ -30,7 +48,7 @@ function buildTable(){
                         <td>${title}</td>
                         <td class="rating">${rating}</td>
                         <td class="actions">
-                            <button class="edit-btn btn btn-warning" data-dbid =${id}>Edit</button>
+                            <button class="edit-btn btn btn-warning data-toggle="modal" data-target="#form-modal" data-dbid =${id}>Edit</button>
                             <button class="delete-btn btn btn-danger" data-dbid =${id}>Delete</button>
                         </td>
                     </tr>`;
@@ -48,14 +66,6 @@ function buildTable(){
     });
 }
 
-function addTableEvents() {
-    $("table").delegate(".edit-btn", "click", function(){
-        let id = $(this).data("dbid");
-        let movie = getMovies(id);
-
-    });
-}
-
 addMovie.click( (e) => {
     e.preventDefault();
     $('#form-modal').modal('hide');
@@ -63,7 +73,7 @@ addMovie.click( (e) => {
     let title = $("#title").val();
     let ratings = $("input[name=rating]");
     let rating = Array.from(ratings).filter( (radio) => radio.checked === true );
-    let addsMovie = movieActions.addMovie(title, rating[0].value);
+    let addsMovie = movieActions.add(title, rating[0].value);
     // let addsMovie = movieActions.editMovie(1, title, rating[0].value);
     addsMovie.then( () => {
         loading.hide();
