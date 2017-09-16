@@ -13,7 +13,7 @@ const loading = require("./loading");
 
 const addMovie = $("#add-movie-btn");
 const moviesBody = $("#moviesList");
-const errorDiv = $("#error");
+const addFormBtn = $("#show-add-form");
 
 buildTable();
 
@@ -21,16 +21,27 @@ function addTableEvents() {
 
     $("table").off().delegate(".edit-btn", "click", function(){
         let id = $(this).data("dbid");
-        let movie = getMovies(id).then( () => response.json() );
-        console.log(movie.then( (data) => console.log(data) ));
+        console.log(id);
+
+        // $("#modal-title").html("Edit movie");
+        // $("#add-movie-btn").hide();
+        // $("#edit-movie-btn").show();
+        //
+        // getMovies(id).then( (data) => {
+        //     $("#title").val(data.title);
+        //     $("#rating").attr("checked", "checked");
+        // } );
+        // buildTable();
     });
 
     $("table").off().delegate(".delete-btn", "click", function(){
+        loading.show();
         let id = $(this).data("dbid");
         movieActions.remove(id)
-            .then( () => response.json() )
-            .catch( (error) => console.log(error) );
-        buildTable();
+            .then( (response) => {
+                console.log(response);
+                buildTable();
+            });
     });
 
 }
@@ -43,12 +54,19 @@ function buildTable(){
         moviesBody.empty();
         let moviesHMTL = "";
         movies.reverse().forEach( ({title, rating, id}) => {
+
+            let stars = "";
+
+            for(let i = 1;i <= rating;i++){
+                stars += "&#9733;";
+            }
+
             moviesHMTL += `
                     <tr>
                         <td>${title}</td>
-                        <td class="rating">${rating}</td>
+                        <td class="rating">${stars}</td>
                         <td class="actions">
-                            <button class="edit-btn btn btn-warning data-toggle="modal" data-target="#form-modal" data-dbid =${id}>Edit</button>
+                            <button class="edit-btn btn btn-warning" data-toggle="modal" data-target="#form-modal" data-dbid=${id}>Edit</button>
                             <button class="delete-btn btn btn-danger" data-dbid =${id}>Delete</button>
                         </td>
                     </tr>`;
@@ -65,6 +83,15 @@ function buildTable(){
         loading.hide();
     });
 }
+
+addFormBtn.click( (e) => {
+    e.preventDefault();
+    let addForm = $("#add-movie-form")[0];
+    addForm.reset();
+    $("#modal-title").html("Add a movie");
+    $("#add-movie-btn").show();
+    $("#edit-movie-btn").hide();
+});
 
 addMovie.click( (e) => {
     e.preventDefault();
