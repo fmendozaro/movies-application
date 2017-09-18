@@ -29,7 +29,8 @@ function addTableEvents() {
 
         movieAPI.get(id).then( (data) => {
             $("#title").val(data.title);
-            $("input[name=rating]").eq(data.rating-1).attr("checked", "checked");
+            $("#dbid").val(id);
+            $("input[name=rating]").eq(data.rating-1).prop("checked", "checked");
         });
     });
 
@@ -90,7 +91,7 @@ function addOrEdit(e, action){
     loading.show();
     let title = $("#title").val();
     let ratings = $("input[name=rating]");
-    let id = $(this).data("dbid");
+    let id = $("#dbid").val();
     let rating = Array.from(ratings).filter( (radio) => radio.checked === true );
 
     if(action === "add"){
@@ -106,7 +107,7 @@ function addOrEdit(e, action){
 
     }else{
         //Edit
-        let editsMovie = movieAPI.add(title, rating[0].value, id);
+        let editsMovie = movieAPI.edit(id, title, rating[0].value);
         // let addsMovie = movieAPI.editMovie(1, title, rating[0].value);
         editsMovie.then( () => {
             loading.hide();
