@@ -7,37 +7,36 @@ sayHello('World');
 /**
  * require style imports
  */
-const getMovies = require('./getMovies.js');
-const movieActions = require("./movieActions");
+const movieAPI = require('./movieAPI.js');
 const loading = require("./loading");
 
-const addMovie = $("#add-movie-btn");
+const addBtn = $("#add-movie-btn");
+const editBtn = $("#edit-movie-btn");
 const moviesBody = $("#moviesList");
 const addFormBtn = $("#show-add-form");
+const inputs = $("#show-add-form :input");
 
 buildTable();
 
 function addTableEvents() {
 
-    $("table").off().delegate(".edit-btn", "click", function(){
+    $("tbody").off().delegate(".edit-btns", "click", function(){
         let id = $(this).data("dbid");
-        console.log(id);
 
-        // $("#modal-title").html("Edit movie");
-        // $("#add-movie-btn").hide();
-        // $("#edit-movie-btn").show();
-        //
-        // getMovies(id).then( (data) => {
-        //     $("#title").val(data.title);
-        //     $("#rating").attr("checked", "checked");
-        // } );
-        // buildTable();
+        $("#modal-title").html("Edit movie");
+        $("#add-movie-btn").hide();
+        $("#edit-movie-btn").show();
+
+        movieAPI.get(id).then( (data) => {
+            $("#title").val(data.title);
+            $("input[name=rating]").eq(data.rating-1).attr("checked", "checked");
+        });
     });
 
-    $("table").off().delegate(".delete-btn", "click", function(){
+    $("table").off().delegate(".delete-btns", "click", function(){
         loading.show();
         let id = $(this).data("dbid");
-        movieActions.remove(id)
+        movieAPI.remove(id)
             .then( (response) => {
                 console.log(response);
                 buildTable();
@@ -49,7 +48,7 @@ function addTableEvents() {
 function buildTable(){
     loading.show();
 
-    getMovies().then((movies) => {
+    movieAPI.get().then((movies) => {
 
         moviesBody.empty();
         let moviesHMTL = "";
@@ -66,8 +65,8 @@ function buildTable(){
                         <td>${title}</td>
                         <td class="rating">${stars}</td>
                         <td class="actions">
-                            <button class="edit-btn btn btn-warning" data-toggle="modal" data-target="#form-modal" data-dbid=${id}>Edit</button>
-                            <button class="delete-btn btn btn-danger" data-dbid =${id}>Delete</button>
+                            <button class="edit-btns btn btn-warning" data-toggle="modal" data-target="#form-modal" data-dbid=${id}>Edit</button>
+                            <button class="delete-btns btn btn-danger" data-dbid =${id}>Delete</button>
                         </td>
                     </tr>`;
         });
@@ -84,6 +83,41 @@ function buildTable(){
     });
 }
 
+function addOrEdit(e, action){
+
+    e.preventDefault();
+    $('#form-modal').modal('hide');
+    loading.show();
+    let title = $("#title").val();
+    let ratings = $("input[name=rating]");
+    let id = $(this).data("dbid");
+    let rating = Array.from(ratings).filter( (radio) => radio.checked === true );
+
+    if(action === "add"){
+
+        let addsMovie = movieAPI.add(title, rating[0].value);
+        // let addsMovie = movieAPI.editMovie(1, title, rating[0].value);
+        addsMovie.then( () => {
+            loading.hide();
+            buildTable();
+        }).catch( (error) => {
+            console.error(error);
+        });
+
+    }else{
+        //Edit
+        let editsMovie = movieAPI.add(title, rating[0].value, id);
+        // let addsMovie = movieAPI.editMovie(1, title, rating[0].value);
+        editsMovie.then( () => {
+            loading.hide();
+            buildTable();
+        }).catch( (error) => {
+            console.error(error);
+        });
+    }
+
+}
+
 addFormBtn.click( (e) => {
     e.preventDefault();
     let addForm = $("#add-movie-form")[0];
@@ -93,19 +127,10 @@ addFormBtn.click( (e) => {
     $("#edit-movie-btn").hide();
 });
 
-addMovie.click( (e) => {
-    e.preventDefault();
-    $('#form-modal').modal('hide');
-    loading.show();
-    let title = $("#title").val();
-    let ratings = $("input[name=rating]");
-    let rating = Array.from(ratings).filter( (radio) => radio.checked === true );
-    let addsMovie = movieActions.add(title, rating[0].value);
-    // let addsMovie = movieActions.editMovie(1, title, rating[0].value);
-    addsMovie.then( () => {
-        loading.hide();
-        buildTable();
-    }).catch( (error) => {
-        console.error(error);
-    });
+addBtn.click( (e) => {
+    addOrEdit(e, "add");
+});
+
+editBtn.click( (e) => {
+    addOrEdit(e, "edit");
 });
