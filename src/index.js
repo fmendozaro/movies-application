@@ -37,7 +37,7 @@ function addTableEvents() {
     $("table").off().delegate(".delete-btns", "click", function(){
         loading.show();
         let id = $(this).data("dbid");
-        movieAPI.remove(id)
+        movieAPI.destroy(id)
             .then( (response) => {
                 console.log(response);
                 buildTable();
@@ -96,7 +96,7 @@ function addOrEdit(e, action){
 
     if(action === "add"){
 
-        let addsMovie = movieAPI.add(title, rating[0].value);
+        let addsMovie = movieAPI.create(title, rating[0].value);
         // let addsMovie = movieAPI.editMovie(1, title, rating[0].value);
         addsMovie.then( () => {
             loading.hide();
@@ -107,8 +107,7 @@ function addOrEdit(e, action){
 
     }else{
         //Edit
-        let editsMovie = movieAPI.edit(id, title, rating[0].value);
-        // let addsMovie = movieAPI.editMovie(1, title, rating[0].value);
+        let editsMovie = movieAPI.update(id, title, rating[0].value);
         editsMovie.then( () => {
             loading.hide();
             buildTable();

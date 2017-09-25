@@ -4,7 +4,7 @@ const get = (id) => {
     .then(response => response.json());
 };
 
-const add = (title, rating) => {
+const create = (title, rating) => {
     return fetch("/api/movies", {
         headers: {
             "content-type": "application/json"
@@ -16,7 +16,7 @@ const add = (title, rating) => {
     });
 };
 
-const edit = (id, title, rating) => {
+const update = (id, title, rating) => {
     return fetch(`/api/movies/${id}`, {
         headers: {
             "content-type": "application/json"
@@ -28,7 +28,7 @@ const edit = (id, title, rating) => {
     });
 };
 
-const remove = (id) => {
+const destroy = (id) => {
     return fetch(`/api/movies/${id}`, {
         headers: {
             "content-type": "application/json"
@@ -39,4 +39,4 @@ const remove = (id) => {
     }).catch( (error) => console.log(error));
 };
 
-module.exports = {add, edit, remove, get};
+module.exports = {add, edit: update, remove, get};
