@@ -1,3 +1,5 @@
+import keys from './keys';
+
 const get = (id) => {
   let url = (id) ? `/api/movies/${id}` : "/api/movies";
   return fetch(url)
@@ -28,6 +30,11 @@ const update = (id, title, rating) => {
     });
 };
 
+const makePoster = (title) => {
+    return fetch(`http://www.omdbapi.com/?apikey=${keys.omdbKey}&t=${title}`)
+        .then(movie => movie.json())
+};
+
 const destroy = (id) => {
     return fetch(`/api/movies/${id}`, {
         headers: {
@@ -39,4 +46,4 @@ const destroy = (id) => {
     }).catch( (error) => console.log(error));
 };
 
-module.exports = {create, update, destroy, get};
+module.exports = {create, update, destroy, get, makePoster};

@@ -1,1 +1,3 @@
-export const omdbKey = "keyID";
+module.exports = {
+    'omdbKey': 'keyID'
+};
