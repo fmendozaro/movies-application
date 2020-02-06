@@ -39,4 +39,4 @@ const destroy = (id) => {
     }).catch( (error) => console.log(error));
 };
 
-module.exports = {create, edit: update, destroy, get};
+module.exports = {create, update, destroy, get};
