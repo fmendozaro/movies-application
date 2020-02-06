@@ -85,7 +85,6 @@ function buildTable(){
 }
 
 function addOrEdit(e, action){
-
     e.preventDefault();
     $('#form-modal').modal('hide');
     loading.show();

@@ -1,4 +1,7 @@
-node_modules/
-.idea
+.idea/
 *.iml
-package-lock.json
+
+node_modules/
+main.js
+*.map
+/public/keys.js

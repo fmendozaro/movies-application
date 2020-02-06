@@ -9,51 +9,6 @@
       "title": "Star Wars: A New Hope",
       "rating": "5",
       "id": 2
-    },
-    {
-      "title": "Harry Potter",
-      "rating": "5",
-      "id": 3
-    },
-    {
-      "title": "Harry Potter 2",
-      "rating": "5",
-      "id": 4
-    },
-    {
-      "title": "Zombie Sharks",
-      "rating": "4",
-      "id": 5
-    },
-    {
-      "title": "Fer's Movie",
-      "rating": "5",
-      "id": 6
-    },
-    {
-      "title": "fer",
-      "rating": "4",
-      "id": 7
-    },
-    {
-      "title": "test",
-      "rating": "3",
-      "id": 8
-    },
-    {
-      "title": "test",
-      "rating": "1",
-      "id": 9
-    },
-    {
-      "title": "asd",
-      "rating": "3",
-      "id": 10
-    },
-    {
-      "title": "asd",
-      "rating": "4",
-      "id": 11
     }
   ]
 }
