@@ -57,18 +57,20 @@ function buildTable() {
         movies.reverse().forEach(({title, rating, id}) => {
 
             let stars = "";
+            let poster = "";
 
             for (let i = 1; i <= rating; i++) {
                 stars += "&#9733;";
             }
+
             movieAPI.makePoster(title)
-                .then((omdbData) => {
-                    let poster = (omdbData.Poster != null) ? omdbData.Poster : 'https://via.placeholder.com/350x650';
+                .then( apiData => {
+                    poster = (apiData.Poster) ? apiData.Poster : 'https://via.placeholder.com/350x550';
                     moviesHMTL += `
                     <tr>
                         <td>
                             ${title}
-                            <img class="img-fluid" src="${poster}" alt="poster for ${title}"> 
+                            <img src="${poster}" alt="${title} movie poster">
                         </td>
                         <td class="rating">${stars}</td>
                         <td class="actions">
@@ -76,15 +78,12 @@ function buildTable() {
                             <button class="delete-btns btn btn-danger" data-dbid =${id}>Delete</button>
                         </td>
                     </tr>`;
-                });
+
+                    moviesBody.html(moviesHMTL);
+                    addTableEvents();
+                    loading.hide();
+                 });
         });
-
-        moviesBody.html(moviesHMTL);
-
-        addTableEvents();
-
-        loading.hide();
-
     }).catch((error) => {
         console.error(error);
         // errorDiv.text = `Oh no! Something went wrong.\nCheck the console for details. ERROR: ${error}`;
